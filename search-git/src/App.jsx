@@ -13,10 +13,11 @@ const SessionGitData = styled("div", {
   flexDirection: "column",
   gap: "30px",
   width: "550px",
+  marginTop: 50,
 
   img: {
-    width: "200px",
-    height: "200px",
+    width: "180px",
+    height: "180px",
     borderRadius: "50%",
   },
   p: {
@@ -27,7 +28,7 @@ const SessionGitData = styled("div", {
 });
 
 const MainContent = styled("div", {
-  backgroundColor: "#3760DB",
+  backgroundColor: "#12263A",
   height: "100vh",
   display: "flex",
   flexDirection: "column",
@@ -41,18 +42,18 @@ const MainContent = styled("div", {
 
   h1: {
     marginTop: "20px",
-    color: "#E8A92E",
+    color: "Bisque",
   },
 });
 
 const ButtonDoMal = css({
-  width: "110px",
+  width: "170px",
   padding: "10px 10px",
   borderRadius: "10px",
   border: "none",
   fontSize: "18px",
   fontWeight: "bold",
-  color: "white",
+  color: "#fff",
   fontFamily: "system-ui",
   backgroundColor: "#030f3478",
 
@@ -69,11 +70,14 @@ const InputDoMal = styled("input", {
   fontWeight: "bold",
   color: "#2c7bd0",
   fontFamily: "system-ui",
+  padding: "10px",
 });
 
 function App() {
   const [nick, setNick] = useState();
   const [userGitData, setUserGitData] = useState();
+
+  const [array, setArray] = useState([]);
 
   const handleChangeInput = (e) => {
     setNick(e.target.value);
@@ -87,6 +91,7 @@ function App() {
 
   useEffect(() => {
     console.log("dados do estado", userGitData?.login);
+    setArray(userGitData);
   }, [nick, userGitData]);
 
   return (
