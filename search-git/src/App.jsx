@@ -73,9 +73,35 @@ const InputDoMal = styled("input", {
   padding: "10px",
 });
 
+const ContainerRepos = styled("div", {
+  backgroundColor: "#F4EDEA",
+  margin: "20px auto",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const ContainerReposInfos = styled("div", {
+  width: "150px",
+  height: "220px",
+  textAlign: "center",
+  display: "flex",
+  justifyContent: "center",
+  backgroundColor: "LightGrey",
+  borderRadius: "20px",
+
+  p: {
+    color: "#34030378",
+    fontFamily: "system-ui",
+    fontWeight: "800",
+    fontSize: "18px",
+  },
+});
+
 function App() {
   const [nick, setNick] = useState();
   const [userGitData, setUserGitData] = useState();
+  const [userGitRepos, setUserGitRepos] = useState();
 
   const [array, setArray] = useState([]);
 
@@ -85,14 +111,17 @@ function App() {
 
   const handleClickSearch = () => {
     axios.get(`https://api.github.com/users/${nick}`).then((response) => {
+      axios.get(response.data.repos_url).then((responseRepos) => {
+        setUserGitRepos(responseRepos.data);
+      });
       setUserGitData(response.data);
     });
   };
 
   useEffect(() => {
-    console.log("dados do estado", userGitData?.login);
+    console.log("dados do estado", userGitRepos);
     setArray(userGitData);
-  }, [nick, userGitData]);
+  }, [nick, userGitRepos]);
 
   return (
     <div className={Main()}>
@@ -112,6 +141,15 @@ function App() {
           <p>{`Seja Bem vindo ${userGitData?.login ?? ""}`}</p>
           <img src={userGitData?.avatar_url} alt="" />
         </SessionGitData>
+        <ContainerRepos>
+          <h4>Seus repositórios mais recentes</h4>
+          <dic>repos aqui</dic>
+          {userGitRepos?.slice(0, 5).map((item) => (
+            <ContainerReposInfos>
+              <p>{item.name}</p>
+            </ContainerReposInfos>
+          ))}
+        </ContainerRepos>
       </MainContent>
     </div>
   );
