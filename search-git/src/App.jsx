@@ -1,4 +1,5 @@
 import { styled, globalCss, css } from "@stitches/react";
+import { useEffect, useState } from "react";
 
 const Main = globalCss({
   "*": { margin: 0, padding: 0 },
@@ -50,6 +51,22 @@ const InputDoMal = styled("input", {
 });
 
 function App() {
+  const handleChangeInput = (e) => {
+    setNick(e.target.value);
+  };
+
+  const handleClickSearch = () => {
+    fetch(`https://api.github.com/users/${nick}`);
+  };
+
+  const [nick, setNick] = useState();
+
+  useEffect(() => {
+    console.log(nick);
+  }, [nick]);
+
+  console.log(nick);
+
   return (
     <div className={Main()}>
       <MainContent>
@@ -58,8 +75,11 @@ function App() {
           <InputDoMal
             placeholder="Digite um nick do github para pesquizar"
             type="text"
+            onChange={(e) => handleChangeInput(e)}
           />
-          <button className={ButtonDoMal()}>Pesquisar github</button>
+          <button onClick={() => handleClickSearch()} className={ButtonDoMal()}>
+            Pesquisar github
+          </button>
         </div>
       </MainContent>
     </div>
