@@ -1,8 +1,29 @@
 import { styled, globalCss, css } from "@stitches/react";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Main = globalCss({
   "*": { margin: 0, padding: 0 },
+});
+
+const SessionGitData = styled("div", {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  flexDirection: "column",
+  gap: "30px",
+  width: "550px",
+
+  img: {
+    width: "200px",
+    height: "200px",
+    borderRadius: "50%",
+  },
+  p: {
+    fontSize: "28px",
+    color: "Bisque",
+    fontWeight: "bold",
+  },
 });
 
 const MainContent = styled("div", {
@@ -51,21 +72,22 @@ const InputDoMal = styled("input", {
 });
 
 function App() {
+  const [nick, setNick] = useState();
+  const [userGitData, setUserGitData] = useState();
+
   const handleChangeInput = (e) => {
     setNick(e.target.value);
   };
 
   const handleClickSearch = () => {
-    fetch(`https://api.github.com/users/${nick}`);
+    axios.get(`https://api.github.com/users/${nick}`).then((response) => {
+      setUserGitData(response.data);
+    });
   };
 
-  const [nick, setNick] = useState();
-
   useEffect(() => {
-    console.log(nick);
-  }, [nick]);
-
-  console.log(nick);
+    console.log("dados do estado", userGitData?.login);
+  }, [nick, userGitData]);
 
   return (
     <div className={Main()}>
@@ -81,6 +103,10 @@ function App() {
             Pesquisar github
           </button>
         </div>
+        <SessionGitData>
+          <p>{`Seja Bem vindo ${userGitData?.login ?? ""}`}</p>
+          <img src={userGitData?.avatar_url} alt="" />
+        </SessionGitData>
       </MainContent>
     </div>
   );
